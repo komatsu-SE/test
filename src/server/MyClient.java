@@ -22,9 +22,12 @@ public class MyClient extends JFrame implements MouseListener, MouseMotionListen
 	private JButton buttonArray[];//ボタン用の配列
 	private Container c;
 	private ImageIcon blackIcon, whiteIcon, boardIcon;
+
+	//	private String turnString[] = { "黒", "白" };
 	private String myNumber;
 	private int mycolor = 0;
 	private int turn = 0;
+
 	PrintWriter out;//出力用のライター
 
 	public MyClient() {
@@ -46,7 +49,7 @@ public class MyClient extends JFrame implements MouseListener, MouseMotionListen
 
 		c.setLayout(null);//自動レイアウトの設定を行わない
 		//ボタンの生成
-		buttonArray = new JButton[65];
+		buttonArray = new JButton[64];
 		for (int i = 0; i < 64; i++) {
 			buttonArray[i] = new JButton(boardIcon);//ボタンにアイコンを設定する
 			c.add(buttonArray[i]);//ペインに貼り付ける
@@ -60,9 +63,6 @@ public class MyClient extends JFrame implements MouseListener, MouseMotionListen
 		buttonArray[35].setIcon(whiteIcon);
 		buttonArray[36].setIcon(blackIcon);
 
-		buttonArray[64] = new JButton(blackIcon);//ボタンにアイコンを設定する
-		c.add(buttonArray[64]);//ペインに貼り付ける
-		buttonArray[64].setBounds(380, 45 + 1, 45, 45);//ボタンの大きさと位置を設定する．(x座標，y座標,xの幅,yの幅）
 		//サーバに接続する
 		Socket socket = null;
 		try {
@@ -99,7 +99,7 @@ public class MyClient extends JFrame implements MouseListener, MouseMotionListen
 
 				out = new PrintWriter(socket.getOutputStream(), true);
 				myNumber = br.readLine();
-				
+
 				if (Integer.valueOf(myNumber) % 2 == 0) {
 					yourString = "黒です。";
 					mycolor = 0;
@@ -120,14 +120,14 @@ public class MyClient extends JFrame implements MouseListener, MouseMotionListen
 							String theBName = inputTokens[1];
 							String setcolor = inputTokens[4];
 							int theBnum = Integer.parseInt(theBName);
-							
+
 							if (Integer.valueOf(setcolor) == 0) {
 								buttonArray[theBnum].setIcon(blackIcon);
-								buttonArray[64].setIcon(blackIcon);
 							} else {
 								buttonArray[theBnum].setIcon(whiteIcon);
-								buttonArray[64].setIcon(whiteIcon);
 							}
+							
+							
 						}
 					} else {
 						break;
@@ -153,20 +153,19 @@ public class MyClient extends JFrame implements MouseListener, MouseMotionListen
 		Icon thisIcon = theButton.getIcon();
 
 		if (thisIcon.equals(boardIcon)) {
-		String msg = "PLACE" + " "
-				+ theArrayIndex + " "
-				+ theBtnLocation.x + " "
-				+ theBtnLocation.y + " "
-				+ mycolor + " "
-				+ turn + " "
-				+ myNumber;
-		//サーバに情報を送る
-		out.println(msg);//送信データをバッファに書き出す
-		out.flush();//送信データをフラッシュ（ネットワーク上にはき出す）する
+			String msg = "PLACE" + " "
+					+ theArrayIndex + " "
+					+ theBtnLocation.x + " "
+					+ theBtnLocation.y + " "
+					+ mycolor + " "
+					+ turn + " "
+					+ myNumber;
+			//サーバに情報を送る
+			out.println(msg);//送信データをバッファに書き出す
+			out.flush();//送信データをフラッシュ（ネットワーク上にはき出す）する
+			repaint();//画面のオブジェクトを描画し直す
 		}
-		repaint();//画面のオブジェクトを描画し直す
 	}
-
 	public void mouseEntered(MouseEvent e) {//マウスがオブジェクトに入ったときの処理
 	}
 
