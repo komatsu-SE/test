@@ -60,9 +60,6 @@ public class MyClient extends JFrame implements MouseListener, MouseMotionListen
 		buttonArray[35].setIcon(whiteIcon);
 		buttonArray[36].setIcon(blackIcon);
 
-		buttonArray[64] = new JButton(blackIcon);//ボタンにアイコンを設定する
-		c.add(buttonArray[64]);//ペインに貼り付ける
-		buttonArray[64].setBounds(380, 45 + 1, 45, 45);//ボタンの大きさと位置を設定する．(x座標，y座標,xの幅,yの幅）
 		//サーバに接続する
 		Socket socket = null;
 		try {
