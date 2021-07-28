@@ -81,6 +81,7 @@ public class MyClient extends JFrame implements MouseListener, MouseMotionListen
 
 	//メッセージ受信のためのスレッド
 	public class MesgRecvThread extends Thread {
+		Judge judge =new Judge();
 		Socket socket;
 		String myName;
 
@@ -122,6 +123,7 @@ public class MyClient extends JFrame implements MouseListener, MouseMotionListen
 							int theBnum = Integer.parseInt(theBName);
 
 							if (Integer.valueOf(setcolor) == 0) {
+								judge.reverseJudge(theBnum,buttonArray);
 								buttonArray[theBnum].setIcon(blackIcon);
 							} else {
 								buttonArray[theBnum].setIcon(whiteIcon);
