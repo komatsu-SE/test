@@ -1,5 +1,6 @@
 package server;
 
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
@@ -18,7 +19,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 
 public class MyClient extends JFrame implements MouseListener, MouseMotionListener {
 	private JButton buttonArray[];//ボタン用の配列
@@ -26,8 +26,9 @@ public class MyClient extends JFrame implements MouseListener, MouseMotionListen
 	private ImageIcon blackIcon, whiteIcon, boardIcon;
 	private String myNumber;
 	private int mycolor = 0;
-	private int turn = 0;
+	int turn = 0;
 	PrintWriter out;//出力用のライター
+	JLabel l = new JLabel("黒ターン");
 
 	public MyClient() {
 		//名前の入力ダイアログを開く
@@ -62,12 +63,12 @@ public class MyClient extends JFrame implements MouseListener, MouseMotionListen
 		buttonArray[35].setIcon(whiteIcon);
 		buttonArray[36].setIcon(blackIcon);
 
-		JPanel p = new JPanel();
-		JLabel l = new JLabel("Good Job!");
-		
-		l.setBounds(10, 500, 450, 450);
-		p.add(l);
-		c.add(p);
+		l.setOpaque(true);
+		l.setBackground(Color.green);
+		l.setForeground(Color.black);
+		l.setBounds(10, 400, 300, 50);
+		getContentPane().add(l);
+		//		c.add(l);
 		//サーバに接続する
 		Socket socket = null;
 		try {
@@ -124,13 +125,19 @@ public class MyClient extends JFrame implements MouseListener, MouseMotionListen
 						if (cmd.equals("PLACE")) {
 							String theBName = inputTokens[1];
 							String setcolor = inputTokens[4];
+							int mycolor = Integer.valueOf(setcolor);
 							int theBnum = Integer.parseInt(theBName);
 
-							if (Integer.valueOf(setcolor) == 0) {
+							if (turn == 0) {
 								buttonArray[theBnum].setIcon(blackIcon);
+								l.setForeground(Color.white);
+								l.setText("白のターン");
 							} else {
 								buttonArray[theBnum].setIcon(whiteIcon);
+								l.setForeground(Color.black);
+								l.setText("黒のターン");
 							}
+							turn = 1 - turn;
 						}
 					} else {
 						break;
@@ -155,17 +162,19 @@ public class MyClient extends JFrame implements MouseListener, MouseMotionListen
 		Point theBtnLocation = theButton.getLocation();//クリックしたボタンを座標を取得する
 		Icon thisIcon = theButton.getIcon();
 
-		if (thisIcon.equals(boardIcon)) {
-			String msg = "PLACE" + " "
-					+ theArrayIndex + " "
-					+ theBtnLocation.x + " "
-					+ theBtnLocation.y + " "
-					+ mycolor + " "
-					+ turn + " "
-					+ myNumber;
-			//サーバに情報を送る
-			out.println(msg);//送信データをバッファに書き出す
-			out.flush();//送信データをフラッシュ（ネットワーク上にはき出す）する
+		if (mycolor == turn) {
+
+			if (thisIcon.equals(boardIcon)) {
+				String msg = "PLACE" + " "
+						+ theArrayIndex + " "
+						+ theBtnLocation.x + " "
+						+ theBtnLocation.y + " "
+						+ mycolor + " "
+						+ myNumber;
+				//サーバに情報を送る
+				out.println(msg);//送信データをバッファに書き出す
+				out.flush();//送信データをフラッシュ（ネットワーク上にはき出す）する
+			}
 		}
 		repaint();//画面のオブジェクトを描画し直す
 	}
