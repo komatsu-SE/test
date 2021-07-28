@@ -16,7 +16,9 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 public class MyClient extends JFrame implements MouseListener, MouseMotionListener {
 	private JButton buttonArray[];//ボタン用の配列
@@ -60,6 +62,12 @@ public class MyClient extends JFrame implements MouseListener, MouseMotionListen
 		buttonArray[35].setIcon(whiteIcon);
 		buttonArray[36].setIcon(blackIcon);
 
+		JPanel p = new JPanel();
+		JLabel l = new JLabel("Good Job!");
+		
+		l.setBounds(10, 500, 450, 450);
+		p.add(l);
+		c.add(p);
 		//サーバに接続する
 		Socket socket = null;
 		try {
@@ -96,7 +104,7 @@ public class MyClient extends JFrame implements MouseListener, MouseMotionListen
 
 				out = new PrintWriter(socket.getOutputStream(), true);
 				myNumber = br.readLine();
-				
+
 				if (Integer.valueOf(myNumber) % 2 == 0) {
 					yourString = "黒です。";
 					mycolor = 0;
@@ -117,13 +125,11 @@ public class MyClient extends JFrame implements MouseListener, MouseMotionListen
 							String theBName = inputTokens[1];
 							String setcolor = inputTokens[4];
 							int theBnum = Integer.parseInt(theBName);
-							
+
 							if (Integer.valueOf(setcolor) == 0) {
 								buttonArray[theBnum].setIcon(blackIcon);
-								buttonArray[64].setIcon(blackIcon);
 							} else {
 								buttonArray[theBnum].setIcon(whiteIcon);
-								buttonArray[64].setIcon(whiteIcon);
 							}
 						}
 					} else {
@@ -150,16 +156,16 @@ public class MyClient extends JFrame implements MouseListener, MouseMotionListen
 		Icon thisIcon = theButton.getIcon();
 
 		if (thisIcon.equals(boardIcon)) {
-		String msg = "PLACE" + " "
-				+ theArrayIndex + " "
-				+ theBtnLocation.x + " "
-				+ theBtnLocation.y + " "
-				+ mycolor + " "
-				+ turn + " "
-				+ myNumber;
-		//サーバに情報を送る
-		out.println(msg);//送信データをバッファに書き出す
-		out.flush();//送信データをフラッシュ（ネットワーク上にはき出す）する
+			String msg = "PLACE" + " "
+					+ theArrayIndex + " "
+					+ theBtnLocation.x + " "
+					+ theBtnLocation.y + " "
+					+ mycolor + " "
+					+ turn + " "
+					+ myNumber;
+			//サーバに情報を送る
+			out.println(msg);//送信データをバッファに書き出す
+			out.flush();//送信データをフラッシュ（ネットワーク上にはき出す）する
 		}
 		repaint();//画面のオブジェクトを描画し直す
 	}
