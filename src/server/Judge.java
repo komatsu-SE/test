@@ -6,7 +6,7 @@ import javax.swing.JButton;
 public class Judge {
 	private ImageIcon blackIcon, whiteIcon, boardIcon;
 
-	public void reverseJudge(int theBnum, JButton[] buttonArray, String setcolor) {
+	public static void reverseJudge(int theBnum, JButton[] buttonArray, String setcolor) {
 		boolean flag = false;
 
 		int mycolor = Integer.valueOf(setcolor);
