@@ -12,9 +12,6 @@ public class Judge {
 		int mycolor = Integer.valueOf(setcolor);
 
 		//		if (mycolor == 0) {
-		if (theBnum > 8)
-			System.out.println(buttonArray[theBnum - 7].getIcon());
-
 		//			if (!(theBnum % 8 == 0)) buttonArray[theBnum-8].getIcon();
 		/*		} else {
 		
