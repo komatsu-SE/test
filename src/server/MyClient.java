@@ -2,7 +2,6 @@ package server;
 
 import java.awt.Color;
 import java.awt.Container;
-import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -21,7 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 public class MyClient extends JFrame implements MouseListener, MouseMotionListener {
-	private JButton buttonArray[];//ボタン用の配列
+	private JButton buttonArray[][];//ボタン用の配列
 	private Container c;
 	private ImageIcon blackIcon, whiteIcon, boardIcon;
 	private String myNumber;
@@ -49,19 +48,21 @@ public class MyClient extends JFrame implements MouseListener, MouseMotionListen
 
 		c.setLayout(null);//自動レイアウトの設定を行わない
 		//ボタンの生成
-		buttonArray = new JButton[65];
-		for (int i = 0; i < 64; i++) {
-			buttonArray[i] = new JButton(boardIcon);//ボタンにアイコンを設定する
-			c.add(buttonArray[i]);//ペインに貼り付ける
-			buttonArray[i].setBounds((i % 8) * 45, (i / 8) * 45 + 1, 45, 45);//ボタンの大きさと位置を設定する．(x座標，y座標,xの幅,yの幅）
-			buttonArray[i].addMouseListener(this);//ボタンをマウスでさわったときに反応するようにする
-			//			buttonArray[i].addMouseMotionListener(this);//ボタンをマウスで動かそうとしたときに反応するようにする
-			buttonArray[i].setActionCommand(Integer.toString(i));//ボタンに配列の情報を付加する（ネットワークを介してオブジェクトを識別するため）
+		buttonArray = new JButton[8][8];
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+
+				buttonArray[j][i] = new JButton(boardIcon);//ボタンにアイコンを設定する
+				c.add(buttonArray[j][i]);//ペインに貼り付ける
+				buttonArray[j][i].setBounds(i * 45, j * 45 + 1, 45, 45);//ボタンの大きさと位置を設定する．(x座標，y座標,xの幅,yの幅）
+				buttonArray[j][i].addMouseListener(this);//ボタンをマウスでさわったときに反応するようにする
+				buttonArray[j][i].setActionCommand(Integer.toString(i));//ボタンに配列の情報を付加する（ネットワークを介してオブジェクトを識別するため）
+			}
 		}
-		buttonArray[27].setIcon(blackIcon);
-		buttonArray[28].setIcon(whiteIcon);
-		buttonArray[35].setIcon(whiteIcon);
-		buttonArray[36].setIcon(blackIcon);
+		buttonArray[3][4].setIcon(blackIcon);
+		buttonArray[3][3].setIcon(whiteIcon);
+		buttonArray[4][4].setIcon(whiteIcon);
+		buttonArray[4][3].setIcon(blackIcon);
 
 		l.setOpaque(true);
 		l.setBackground(Color.green);
@@ -123,20 +124,19 @@ public class MyClient extends JFrame implements MouseListener, MouseMotionListen
 						String cmd = inputTokens[0];//コマンドの取り出し．１つ目の要素を取り出す
 
 						if (cmd.equals("PLACE")) {
-							String theBName = inputTokens[1];
-							String setcolor = inputTokens[4];
-							int mycolor = Integer.valueOf(setcolor);
-							int theBnum = Integer.parseInt(theBName);
+							int theBnum = Integer.parseInt(inputTokens[1]);
+							int xInt = theBnum / 8;
+							int yInt = theBnum % 8;
 
+							String setcolor = inputTokens[2];
+
+							Judge.reverseJudge(theBnum, buttonArray, setcolor);
 							if (turn == 0) {
-								buttonArray[theBnum].setIcon(blackIcon);
-								Judge.reverseJudge(theBnum, buttonArray,setcolor);
-
-								buttonArray[theBnum].setIcon(blackIcon);
+								buttonArray[xInt][yInt].setIcon(blackIcon);
 								l.setForeground(Color.white);
 								l.setText("白のターン");
 							} else {
-								buttonArray[theBnum].setIcon(whiteIcon);
+								buttonArray[xInt][yInt].setIcon(whiteIcon);
 								l.setForeground(Color.black);
 								l.setText("黒のターン");
 							}
@@ -162,7 +162,6 @@ public class MyClient extends JFrame implements MouseListener, MouseMotionListen
 	public void mouseClicked(MouseEvent e) {//ボタンをクリックしたときの処理
 		JButton theButton = (JButton) e.getComponent();//クリックしたオブジェクトを得る．型が違うのでキャストする
 		String theArrayIndex = theButton.getActionCommand();//ボタンの配列の番号を取り出す
-		Point theBtnLocation = theButton.getLocation();//クリックしたボタンを座標を取得する
 		Icon thisIcon = theButton.getIcon();
 
 		if (mycolor == turn) {
@@ -170,11 +169,10 @@ public class MyClient extends JFrame implements MouseListener, MouseMotionListen
 			if (thisIcon.equals(boardIcon)) {
 				String msg = "PLACE" + " "
 						+ theArrayIndex + " "
-						+ theBtnLocation.x + " "
-						+ theBtnLocation.y + " "
 						+ mycolor + " "
 						+ myNumber;
 				//サーバに情報を送る
+				System.out.println(theArrayIndex);
 				out.println(msg);//送信データをバッファに書き出す
 				out.flush();//送信データをフラッシュ（ネットワーク上にはき出す）する
 			}

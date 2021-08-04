@@ -6,16 +6,23 @@ import javax.swing.JButton;
 public class Judge {
 	private ImageIcon blackIcon, whiteIcon, boardIcon;
 
-	public static void reverseJudge(int theBnum, JButton[] buttonArray, String setcolor) {
-		boolean flag = false;
+	public static void reverseJudge(int theBnum, JButton[][] buttonArray, String setcolor) {
 
 		int mycolor = Integer.valueOf(setcolor);
 
-		//		if (mycolor == 0) {
-		//			if (!(theBnum % 8 == 0)) buttonArray[theBnum-8].getIcon();
-		/*		} else {
+		int xInt = Integer.valueOf(theBnum) / 8;
+		int yInt = Integer.valueOf(theBnum) % 8;
 		
-				}*/
+		if (Judgebutton(xInt,yInt)) {
+			
+		}
+	}
+
+	private static boolean Judgebutton(int xInt, int yInt) {
+		boolean flag = false;
+		
+		
+		return false;
 	}
 
 	public void reverse(int theBnum) {
@@ -48,5 +55,6 @@ public class Judge {
 	public void setBoardIcon(ImageIcon boardIcon) {
 		this.boardIcon = boardIcon;
 	}
+
 
 }
