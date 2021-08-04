@@ -1,27 +1,24 @@
 package server;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 public class Judge {
+	private ImageIcon blackIcon, whiteIcon, boardIcon;
 
-	public void reverseJudge(int theBnum, JButton[] buttonArray) {
+	public void reverseJudge(int theBnum, JButton[] buttonArray, String setcolor) {
+		boolean flag = false;
 
-		if (!(theBnum % 8 == 0)) {
-			//			buttonArray[theBnum - 1].getIcon();
-			System.out.println(buttonArray[theBnum - 1].getIcon());
-		}
-		if (!(theBnum % 8 == 7)) {
-			//			buttonArray[theBnum + 1].getIcon();
-			System.out.println(buttonArray[theBnum + 1].getIcon());
-		}
-		if (!(theBnum < 8)) {
-			//			buttonArray[theBnum - 10].getIcon();
-			System.out.println(buttonArray[theBnum - 10].getIcon());
-		}
-		if (!(theBnum > 55)) {
-			//			buttonArray[theBnum + 10].getIcon();
-			System.out.println(buttonArray[theBnum + 10].getIcon());
-		}
+		int mycolor = Integer.valueOf(setcolor);
+
+		//		if (mycolor == 0) {
+		if (theBnum > 8)
+			System.out.println(buttonArray[theBnum - 7].getIcon());
+
+		//			if (!(theBnum % 8 == 0)) buttonArray[theBnum-8].getIcon();
+		/*		} else {
+		
+				}*/
 	}
 
 	public void reverse(int theBnum) {
@@ -41,6 +38,18 @@ public class Judge {
 		if (!(theBnum > 55)) {
 
 		}
+	}
+
+	public void setWhiteIcon(ImageIcon whiteIcon) {
+		this.whiteIcon = whiteIcon;
+	}
+
+	public void setBlackIcon(ImageIcon blackIcon) {
+		this.blackIcon = blackIcon;
+	}
+
+	public void setBoardIcon(ImageIcon boardIcon) {
+		this.boardIcon = boardIcon;
 	}
 
 }

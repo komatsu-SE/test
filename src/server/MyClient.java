@@ -22,7 +22,6 @@ public class MyClient extends JFrame implements MouseListener, MouseMotionListen
 	private JButton buttonArray[];//ボタン用の配列
 	private Container c;
 	private ImageIcon blackIcon, whiteIcon, boardIcon;
-
 	//	private String turnString[] = { "黒", "白" };
 	private String myNumber;
 	private int mycolor = 0;
@@ -81,14 +80,16 @@ public class MyClient extends JFrame implements MouseListener, MouseMotionListen
 
 	//メッセージ受信のためのスレッド
 	public class MesgRecvThread extends Thread {
-		Judge judge =new Judge();
+		Judge judge = new Judge();
 		Socket socket;
 		String myName;
 
 		public MesgRecvThread(Socket s, String n) {
 			socket = s;
 			myName = n;
-
+			judge.setBlackIcon(blackIcon);
+			judge.setBoardIcon(boardIcon);
+			judge.setWhiteIcon(whiteIcon);
 		}
 
 		//通信状況を監視し，受信データによって動作する
@@ -123,13 +124,12 @@ public class MyClient extends JFrame implements MouseListener, MouseMotionListen
 							int theBnum = Integer.parseInt(theBName);
 
 							if (Integer.valueOf(setcolor) == 0) {
-								judge.reverseJudge(theBnum,buttonArray);
+								judge.reverseJudge(theBnum, buttonArray,setcolor);
 								buttonArray[theBnum].setIcon(blackIcon);
 							} else {
 								buttonArray[theBnum].setIcon(whiteIcon);
 							}
-							
-							
+
 						}
 					} else {
 						break;
@@ -154,20 +154,19 @@ public class MyClient extends JFrame implements MouseListener, MouseMotionListen
 		Point theBtnLocation = theButton.getLocation();//クリックしたボタンを座標を取得する
 		Icon thisIcon = theButton.getIcon();
 
-		if (thisIcon.equals(boardIcon)) {
-			String msg = "PLACE" + " "
-					+ theArrayIndex + " "
-					+ theBtnLocation.x + " "
-					+ theBtnLocation.y + " "
-					+ mycolor + " "
-					+ turn + " "
-					+ myNumber;
-			//サーバに情報を送る
-			out.println(msg);//送信データをバッファに書き出す
-			out.flush();//送信データをフラッシュ（ネットワーク上にはき出す）する
-			repaint();//画面のオブジェクトを描画し直す
-		}
+		String msg = "PLACE" + " "
+				+ theArrayIndex + " "
+				+ theBtnLocation.x + " "
+				+ theBtnLocation.y + " "
+				+ mycolor + " "
+				+ turn + " "
+				+ myNumber;
+		//サーバに情報を送る
+		out.println(msg);//送信データをバッファに書き出す
+		out.flush();//送信データをフラッシュ（ネットワーク上にはき出す）する
+		repaint();//画面のオブジェクトを描画し直す
 	}
+
 	public void mouseEntered(MouseEvent e) {//マウスがオブジェクトに入ったときの処理
 	}
 
