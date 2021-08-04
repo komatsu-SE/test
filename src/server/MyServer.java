@@ -10,16 +10,12 @@ import java.net.Socket;
 class ClientProcThread extends Thread {
 	private int number;//自分の番号
 
-	private Socket incoming;
-	private InputStreamReader myIsr;
 	private BufferedReader myIn;
 	private PrintWriter myOut;
 	private String myName;//接続者の名前
 
 	public ClientProcThread(int n, Socket i, InputStreamReader isr, BufferedReader in, PrintWriter out) {
 		number = n;
-		incoming = i;
-		myIsr = isr;
 		myIn = in;
 		myOut = out;
 	}
