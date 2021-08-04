@@ -1,6 +1,5 @@
 package server;
 
-import java.awt.Color;
 import java.awt.Container;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
@@ -27,12 +26,10 @@ public class MyClient extends JFrame implements MouseListener, MouseMotionListen
 	//	private String turnString[] = { "黒", "白" };
 	private String myNumber;
 	private int mycolor = 0;
-<<<<<<< HEAD
-	int turn = 0;
-=======
+
 	private int turn = 0;
 
->>>>>>> refs/heads/reverse
+
 	PrintWriter out;//出力用のライター
 	JLabel l = new JLabel("黒ターン");
 
@@ -69,15 +66,7 @@ public class MyClient extends JFrame implements MouseListener, MouseMotionListen
 		buttonArray[35].setIcon(whiteIcon);
 		buttonArray[36].setIcon(blackIcon);
 
-<<<<<<< HEAD
-		l.setOpaque(true);
-		l.setBackground(Color.green);
-		l.setForeground(Color.black);
-		l.setBounds(10, 400, 300, 50);
-		getContentPane().add(l);
-		//		c.add(l);
-=======
->>>>>>> refs/heads/reverse
+
 		//サーバに接続する
 		Socket socket = null;
 		try {
@@ -140,31 +129,16 @@ public class MyClient extends JFrame implements MouseListener, MouseMotionListen
 							int mycolor = Integer.valueOf(setcolor);
 							int theBnum = Integer.parseInt(theBName);
 
-<<<<<<< HEAD
-							if (turn == 0) {
-=======
 							if (Integer.valueOf(setcolor) == 0) {
 								judge.reverseJudge(theBnum, buttonArray,setcolor);
->>>>>>> refs/heads/reverse
+
 								buttonArray[theBnum].setIcon(blackIcon);
-<<<<<<< HEAD
-								l.setForeground(Color.white);
-								l.setText("白のターン");
-=======
->>>>>>> refs/heads/reverse
+
 							} else {
 								buttonArray[theBnum].setIcon(whiteIcon);
-<<<<<<< HEAD
-								l.setForeground(Color.black);
-								l.setText("黒のターン");
-=======
->>>>>>> refs/heads/reverse
-							}
-<<<<<<< HEAD
-							turn = 1 - turn;
-=======
 
->>>>>>> refs/heads/reverse
+							}
+
 						}
 					} else {
 						break;
@@ -189,22 +163,6 @@ public class MyClient extends JFrame implements MouseListener, MouseMotionListen
 		Point theBtnLocation = theButton.getLocation();//クリックしたボタンを座標を取得する
 		Icon thisIcon = theButton.getIcon();
 
-<<<<<<< HEAD
-		if (mycolor == turn) {
-
-			if (thisIcon.equals(boardIcon)) {
-				String msg = "PLACE" + " "
-						+ theArrayIndex + " "
-						+ theBtnLocation.x + " "
-						+ theBtnLocation.y + " "
-						+ mycolor + " "
-						+ myNumber;
-				//サーバに情報を送る
-				out.println(msg);//送信データをバッファに書き出す
-				out.flush();//送信データをフラッシュ（ネットワーク上にはき出す）する
-			}
-		}
-=======
 		String msg = "PLACE" + " "
 				+ theArrayIndex + " "
 				+ theBtnLocation.x + " "
@@ -215,7 +173,6 @@ public class MyClient extends JFrame implements MouseListener, MouseMotionListen
 		//サーバに情報を送る
 		out.println(msg);//送信データをバッファに書き出す
 		out.flush();//送信データをフラッシュ（ネットワーク上にはき出す）する
->>>>>>> refs/heads/reverse
 		repaint();//画面のオブジェクトを描画し直す
 	}
 
